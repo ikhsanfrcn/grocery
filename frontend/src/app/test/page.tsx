@@ -1,5 +1,6 @@
 "use client";
 
+import CartIcon from "@/src/components/cartIcon";
 import ProductCard from "@/src/components/productCard";
 import { Product } from "@/src/interface/type";
 import { fetchProducts } from "@/src/lib/api";
@@ -32,9 +33,7 @@ export default function HomePage() {
             <p className="text-xs text-slate-500">Deliver to</p>
             <h1 className="font-semibold">Jakarta, Indonesia ▾</h1>
           </div>
-          <Link href="/cart" className="text-sm">
-            Cart
-          </Link>
+          <CartIcon />
         </div>
         <div className="mt-4">
           <input
@@ -49,7 +48,7 @@ export default function HomePage() {
 
       <section>
         <h3 className="font-medium mb-2">Today&apos;s Choice</h3>
-        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(150px,1fr))]">
+        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(165px,1fr))]">
           {filtered.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

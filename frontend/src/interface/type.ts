@@ -1,13 +1,17 @@
-export type Category = {
+export interface Variant {
   id: number;
+  sku: string;
   name: string;
-};
+  color?: string;
+  size?: string;
+  price: number;
+}
 
-export type Product = {
+export interface Product {
   id: number;
   title: string;
+  description?: string;
+  images?: string[];
   price: number;
-  description: string;
-  images: string[];
-  category: Category;
-};
+  variants?: Variant[];
+}

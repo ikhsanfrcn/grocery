@@ -1,60 +1,82 @@
 "use client";
-import React, { createContext, useContext, useReducer } from "react";
-import { Product } from "../interface/type";
+import { createContext, useContext, useReducer, ReactNode } from "react";
+import { Product, Variant } from "../interface/type";
 
-type Line = { product: Product; qty: number };
+export interface CartLine {
+  product: Product;
+  variant: Variant;
+  qty: number;
+}
 
-type State = {
-  lines: Line[];
-};
+interface CartState {
+  lines: CartLine[];
+}
 
-type Action =
-  | { type: "add"; product: Product; qty?: number }
-  | { type: "remove"; productId: number }
-  | { type: "update"; productId: number; qty: number }
+type CartAction =
+  | { type: "add"; product: Product; variant: Variant; qty?: number }
+  | { type: "update"; variantId: number; qty: number }
+  | { type: "remove"; variantId: number }
   | { type: "clear" };
 
-const CartContext = createContext<
-  | {
-      state: State;
-      dispatch: React.Dispatch<Action>;
-    }
-  | undefined
->(undefined);
+const CartContext = createContext<{
+  state: CartState;
+  dispatch: React.Dispatch<CartAction>;
+} | null>(null);
 
-function reducer(state: State, action: Action): State {
+function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "add": {
-      const idx = state.lines.findIndex(l => l.product.id === action.product.id);
-      if (idx >= 0) {
-        const newLines = state.lines.map((l, i) =>
-          i === idx ? { ...l, qty: l.qty + (action.qty ?? 1) } : l
-        );
-        return { lines: newLines };
-      }
-      return { lines: [...state.lines, { product: action.product, qty: action.qty ?? 1 }] };
-    }
-    case "remove": {
-      return { lines: state.lines.filter(l => l.product.id !== action.productId) };
-    }
-    case "update": {
-      if (action.qty <= 0) {
-        return { lines: state.lines.filter(l => l.product.id !== action.productId) };
+      const existing = state.lines.find(l => l.variant.id === action.variant.id);
+      if (existing) {
+        return {
+          ...state,
+          lines: state.lines.map(l =>
+            l.variant.id === action.variant.id
+              ? { ...l, qty: l.qty + (action.qty || 1) }
+              : l
+          ),
+        };
       }
       return {
-        lines: state.lines.map(l => (l.product.id === action.productId ? { ...l, qty: action.qty } : l))
+        ...state,
+        lines: [
+          ...state.lines,
+          { product: action.product, variant: action.variant, qty: action.qty || 1 },
+        ],
       };
     }
+
+    case "update": {
+      return {
+        ...state,
+        lines: state.lines.map(l =>
+          l.variant.id === action.variantId ? { ...l, qty: Math.max(1, action.qty) } : l
+        ),
+      };
+    }
+
+    case "remove": {
+      return {
+        ...state,
+        lines: state.lines.filter(l => l.variant.id !== action.variantId),
+      };
+    }
+
     case "clear":
       return { lines: [] };
+
     default:
       return state;
   }
 }
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, { lines: [] });
-  return <CartContext.Provider value={{ state, dispatch }}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ state, dispatch }}>
+      {children}
+    </CartContext.Provider>
+  );
 }
 
 export function useCart() {

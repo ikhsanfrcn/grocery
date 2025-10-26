@@ -1,14 +1,23 @@
 "use client";
+
 import { useCart } from "@/src/context/cart";
 import { whatsappUrl } from "../../lib/whatsapp";
 import CartItem from "@/src/components/cartItem";
 
 export default function CartPage() {
   const { state, dispatch } = useCart();
-  const total = state.lines.reduce((s, l) => s + l.qty * l.product.price, 0);
+
+  // ✅ Total dari variant.price
+  const total = state.lines.reduce((sum, line) => sum + line.qty * line.variant.price, 0);
 
   function handleCheckout() {
-    const url = whatsappUrl(state.lines.map(l => ({ product: l.product, qty: l.qty })), "");
+    const url = whatsappUrl(
+      state.lines.map(line => ({
+        product: line.product,
+        variant: line.variant,
+        qty: line.qty,
+      }))
+    );
     window.open(url, "_blank");
   }
 
@@ -20,16 +29,37 @@ export default function CartPage() {
         <div className="text-center text-slate-500">Keranjang masih kosong</div>
       ) : (
         <div className="space-y-3">
-          {state.lines.map(l => (
-            <CartItem key={l.product.id} line={l} onUpdate={(q) => dispatch({ type: "update", productId: l.product.id, qty: q })} onRemove={() => dispatch({ type: "remove", productId: l.product.id })} />
+          {state.lines.map(line => (
+            <CartItem
+              key={line.variant.id}
+              line={line}
+              onUpdate={(q) =>
+                dispatch({
+                  type: "update",
+                  variantId: line.variant.id,
+                  qty: q,
+                })
+              }
+              onRemove={() =>
+                dispatch({
+                  type: "remove",
+                  variantId: line.variant.id,
+                })
+              }
+            />
           ))}
 
-          <div className="border rounded-lg p-3">
+          <div className="border rounded-lg p-3 mt-6">
             <div className="flex justify-between">
               <span className="font-medium">Total</span>
               <span className="font-semibold">${total.toFixed(2)}</span>
             </div>
-            <button onClick={handleCheckout} className="mt-3 w-full py-3 rounded-full bg-black text-white">Checkout via WhatsApp</button>
+            <button
+              onClick={handleCheckout}
+              className="mt-3 w-full py-3 rounded-full bg-black text-white hover:bg-gray-800 transition"
+            >
+              Checkout via WhatsApp
+            </button>
           </div>
         </div>
       )}
