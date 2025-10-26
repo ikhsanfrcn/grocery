@@ -6,26 +6,39 @@ interface WhatsAppOptions {
   detail?: string;
 }
 
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(amount);
+}
+
 export function createWhatsAppMessage({ lines, address, detail }: WhatsAppOptions): string {
-  const header = "Halo, saya ingin memesan:\n\n";
+  const header = "*PESANAN GROSIR*\n\nHalo, saya ingin memesan:\n\n";
 
   const items = lines
     .map((l, idx) => {
       const title = l.product.title;
       const variantName = l.variant.name;
       const sku = l.variant.sku;
-      const subtotal = l.qty * l.variant.price;
-      return `${idx + 1}. ${title} (${variantName}) [${sku}] x${l.qty} = $${subtotal.toFixed(2)}`;
+      const unitPrice = formatCurrency(l.variant.price);
+      const subtotal = formatCurrency(l.qty * l.variant.price);
+      
+      return `${idx + 1}. *${title}*\n   Variant: ${variantName}\n   SKU: ${sku}\n   ${unitPrice} x ${l.qty} = ${subtotal}`;
     })
-    .join("\n");
+    .join("\n\n");
 
-  const total = lines.reduce((s, l) => s + l.qty * l.variant.price, 0);
+  const totalQty = lines.reduce((s, l) => s + l.qty, 0);
+  const totalAmount = lines.reduce((s, l) => s + l.qty * l.variant.price, 0);
 
-  const addressText = address ? `\n\nAlamat pengiriman:\n${address}${detail ? `, (${detail})` : ""}` : "";
+  const summary = `\n\n*RINGKASAN PESANAN*\nTotal Item: ${totalQty} pcs\nTotal Harga: ${formatCurrency(totalAmount)}`;
 
-  const foot = `\n\nTotal = $${total.toFixed(2)}${addressText}\n\nMohon info ketersediaan dan estimasi pengiriman. Terima kasih.`;
+  const addressText = address ? `\n\n*ALAMAT PENGIRIMAN*\n${address}${detail ? `\nCatatan: ${detail}` : ""}` : "";
 
-  return encodeURIComponent(header + items + foot);
+  const footer = `\n\nMohon konfirmasi ketersediaan stok dan estimasi pengiriman.\n\nTerima kasih!`;
+
+  return encodeURIComponent(header + items + summary + addressText + footer);
 }
 
 export function whatsappUrl({ lines, address, detail }: WhatsAppOptions): string {

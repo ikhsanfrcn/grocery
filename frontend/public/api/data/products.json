@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "title": "Kaos Polos Premium",
+    "description": "Kaos polos berkualitas tinggi dengan bahan cotton combed 30s",
+    "category": "Pakaian",
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400"
+    ],
+    "variants": [
+      {
+        "id": 101,
+        "sku": "KP-001-M-BLK",
+        "name": "Medium - Hitam",
+        "color": "Hitam",
+        "size": "M",
+        "price": 45000,
+        "stock": 50
+      },
+      {
+        "id": 102,
+        "sku": "KP-001-L-BLK",
+        "name": "Large - Hitam",
+        "color": "Hitam",
+        "size": "L",
+        "price": 45000,
+        "stock": 30
+      },
+      {
+        "id": 103,
+        "sku": "KP-001-M-WHT",
+        "name": "Medium - Putih",
+        "color": "Putih",
+        "size": "M",
+        "price": 45000,
+        "stock": 25
+      },
+      {
+        "id": 104,
+        "sku": "KP-001-L-WHT",
+        "name": "Large - Putih",
+        "color": "Putih",
+        "size": "L",
+        "price": 45000,
+        "stock": 40
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Kemeja Formal Pria",
+    "description": "Kemeja formal dengan bahan katun premium untuk keperluan kantor",
+    "category": "Pakaian",
+    "images": [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400",
+      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400"
+    ],
+    "variants": [
+      {
+        "id": 201,
+        "sku": "KF-002-M-BLU",
+        "name": "Medium - Biru",
+        "color": "Biru",
+        "size": "M",
+        "price": 125000,
+        "stock": 20
+      },
+      {
+        "id": 202,
+        "sku": "KF-002-L-BLU",
+        "name": "Large - Biru",
+        "color": "Biru",
+        "size": "L",
+        "price": 125000,
+        "stock": 15
+      },
+      {
+        "id": 203,
+        "sku": "KF-002-M-WHT",
+        "name": "Medium - Putih",
+        "color": "Putih",
+        "size": "M",
+        "price": 125000,
+        "stock": 35
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Sepatu Sneakers Casual",
+    "description": "Sepatu sneakers nyaman untuk aktivitas sehari-hari",
+    "category": "Sepatu",
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400"
+    ],
+    "variants": [
+      {
+        "id": 301,
+        "sku": "SS-003-40-BLK",
+        "name": "Size 40 - Hitam",
+        "color": "Hitam",
+        "size": "40",
+        "price": 275000,
+        "stock": 12
+      },
+      {
+        "id": 302,
+        "sku": "SS-003-41-BLK",
+        "name": "Size 41 - Hitam",
+        "color": "Hitam",
+        "size": "41",
+        "price": 275000,
+        "stock": 8
+      },
+      {
+        "id": 303,
+        "sku": "SS-003-40-WHT",
+        "name": "Size 40 - Putih",
+        "color": "Putih",
+        "size": "40",
+        "price": 275000,
+        "stock": 15
+      },
+      {
+        "id": 304,
+        "sku": "SS-003-42-BLK",
+        "name": "Size 42 - Hitam",
+        "color": "Hitam",
+        "size": "42",
+        "price": 275000,
+        "stock": 10
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Tas Ransel Laptop",
+    "description": "Tas ransel dengan kompartemen laptop hingga 15 inch",
+    "category": "Aksesoris",
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
+      "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=400"
+    ],
+    "variants": [
+      {
+        "id": 401,
+        "sku": "TR-004-STD-BLK",
+        "name": "Standard - Hitam",
+        "color": "Hitam",
+        "size": "Standard",
+        "price": 185000,
+        "stock": 25
+      },
+      {
+        "id": 402,
+        "sku": "TR-004-STD-GRY",
+        "name": "Standard - Abu-abu",
+        "color": "Abu-abu",
+        "size": "Standard",
+        "price": 185000,
+        "stock": 18
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Jaket Hoodie Unisex",
+    "description": "Jaket hoodie dengan bahan fleece hangat dan nyaman",
+    "category": "Pakaian",
+    "images": [
+      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400",
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400"
+    ],
+    "variants": [
+      {
+        "id": 501,
+        "sku": "JH-005-M-GRY",
+        "name": "Medium - Abu-abu",
+        "color": "Abu-abu",
+        "size": "M",
+        "price": 165000,
+        "stock": 22
+      },
+      {
+        "id": 502,
+        "sku": "JH-005-L-GRY",
+        "name": "Large - Abu-abu",
+        "color": "Abu-abu",
+        "size": "L",
+        "price": 165000,
+        "stock": 18
+      },
+      {
+        "id": 503,
+        "sku": "JH-005-M-NVY",
+        "name": "Medium - Navy",
+        "color": "Navy",
+        "size": "M",
+        "price": 165000,
+        "stock": 30
+      },
+      {
+        "id": 504,
+        "sku": "JH-005-XL-NVY",
+        "name": "Extra Large - Navy",
+        "color": "Navy",
+        "size": "XL",
+        "price": 175000,
+        "stock": 12
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Celana Jeans Slim Fit",
+    "description": "Celana jeans dengan potongan slim fit modern",
+    "category": "Pakaian",
+    "images": [
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400"
+    ],
+    "variants": [
+      {
+        "id": 601,
+        "sku": "CJ-006-30-BLU",
+        "name": "Size 30 - Biru Tua",
+        "color": "Biru Tua",
+        "size": "30",
+        "price": 195000,
+        "stock": 20
+      },
+      {
+        "id": 602,
+        "sku": "CJ-006-32-BLU",
+        "name": "Size 32 - Biru Tua",
+        "color": "Biru Tua",
+        "size": "32",
+        "price": 195000,
+        "stock": 25
+      },
+      {
+        "id": 603,
+        "sku": "CJ-006-30-BLK",
+        "name": "Size 30 - Hitam",
+        "color": "Hitam",
+        "size": "30",
+        "price": 195000,
+        "stock": 15
+      }
+    ]
+  }
+]

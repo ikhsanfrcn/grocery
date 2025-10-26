@@ -1,38 +1,54 @@
-"use client";
+import { Product } from "@/src/interface/type";
+import ProductActions from "./productActions";
+import Image from "next/image";
+import ImageCarousel from "./imageCarousel";
 
-import { useState } from "react";
-import { useCart } from "../context/cart";
-import { Product, Variant } from "../interface/type";
-import { toast } from "react-toastify";
-
-export default function ProductCard({ product }: { product: Product }) {
-  const { dispatch } = useCart();
-
-  const defaultVariant: Variant = {
-    id: product.id,
-    sku: `SKU-${product.id}`,
-    name: product.title,
-    price: product.price,
-  };
-
-  const [selected, setSelected] = useState<Variant>(
-    () => product.variants?.[0] ?? defaultVariant
-  );
-
-  const image = product.images?.[0] ?? "";
-
-  const handleAdd = () => {
-    dispatch({ type: "add", product, variant: selected });
-     toast.success(`${product.title} ditambahkan ke keranjang`, {
-      theme: "colored",
-    });
-  };
+export default function ProductCardSSR({ product }: { product: Product }) {
+  const defaultVariant = product.variants[0];
+  const images = product.images ?? [""];
+  const isOutOfStock = defaultVariant.stock === 0;
+  const isLowStock = defaultVariant.stock > 0 && defaultVariant.stock <= 5;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-3 flex flex-col justify-between h-full min-w-[180px]">
+    <div className="bg-white rounded-2xl shadow-sm p-3 flex flex-col justify-between h-full min-w-[180px] relative">
+      {/* Category Badge */}
+      <div className="absolute top-2 left-2 z-10">
+        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+          {product.category}
+        </span>
+      </div>
+
+      {/* Stock Badge */}
+      {(isOutOfStock || isLowStock) && (
+        <div className="absolute top-2 right-2 z-10">
+          <span
+            className={`px-2 py-1 text-xs rounded-full ${
+              isOutOfStock
+                ? "bg-red-100 text-red-800"
+                : "bg-yellow-100 text-yellow-800"
+            }`}
+          >
+            {isOutOfStock ? "Habis" : `Sisa ${defaultVariant.stock}`}
+          </span>
+        </div>
+      )}
+
       <div className="w-full h-36 relative rounded-lg overflow-hidden bg-gray-100">
-        {image ? (
-          <img src={image} alt={product.title} className="w-full h-full object-cover" />
+        {images[0] ? (
+          images.length > 1 ? (
+            <ImageCarousel images={images} alt={product.title} />
+          ) : (
+            <Image
+              src={images[0]}
+              alt={product.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className={`object-cover transition-opacity ${
+                isOutOfStock ? "opacity-50" : ""
+              }`}
+              loading="eager"
+            />
+          )
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400">
             No Image
@@ -44,37 +60,12 @@ export default function ProductCard({ product }: { product: Product }) {
         {product.title}
       </h4>
 
-      {product.variants && product.variants.length > 0 ? (
-        <select
-          value={selected?.id ?? ""}
-          onChange={(e) => {
-            const v = product.variants?.find(
-              (v) => v.id === Number(e.target.value)
-            );
-            if (v) setSelected(v);
-          }}
-          className="border rounded-md p-1 text-sm mt-1"
-        >
-          {product.variants.map((v) => (
-            <option key={v.id} value={v.id}>
-              {v.name} - ${v.price.toFixed(2)}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <div className="text-xs text-gray-400 mt-1">No variant available</div>
-      )}
+      <p className="text-xs text-gray-500 line-clamp-2 mb-2">
+        {product.description}
+      </p>
 
-      <div className="mt-2 flex items-center justify-between">
-        <div className="text-sm font-semibold">
-          ${selected?.price.toFixed(2)}
-        </div>
-        <button
-          onClick={handleAdd}
-          className="ml-2 px-3 py-1 rounded-full border hover:bg-gray-100"
-        >
-          + Cart
-        </button>
+      <div className="mt-2">
+        <ProductActions product={product} />
       </div>
     </div>
   );

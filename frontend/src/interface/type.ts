@@ -5,13 +5,23 @@ export interface Variant {
   color?: string;
   size?: string;
   price: number;
+  stock: number;
 }
 
 export interface Product {
   id: number;
   title: string;
   description?: string;
+  category: string;
   images?: string[];
-  price: number;
-  variants?: Variant[];
+  variants: Variant[];
+}
+
+export interface FilterOptions {
+  category: string;
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  sortBy: 'name' | 'price-low' | 'price-high';
 }

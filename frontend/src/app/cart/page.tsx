@@ -3,7 +3,7 @@
 import { useCart } from "@/src/context/cart";
 import { whatsappUrl } from "../../lib/whatsapp";
 import { useLocation } from "@/src/context/location";
-import CartItem from "@/src/components/cartItem";
+import CartItem from "@/src/app/cart/_components/cartItem";
 import Link from "next/link";
 
 export default function CartPage() {
@@ -15,6 +15,9 @@ export default function CartPage() {
     0
   );
 
+  const itemCount = state.lines.length;
+  const totalQuantity = state.lines.reduce((sum, line) => sum + line.qty, 0);
+
   function handleCheckout() {
     const url = whatsappUrl({
       lines: state.lines,
@@ -25,8 +28,15 @@ export default function CartPage() {
   }
 
   return (
-    <div className="p-4 pb-24">
-      <h2 className="text-lg font-semibold mb-4">Keranjang</h2>
+    <div className="mt-4 pb-24">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold">Keranjang</h2>
+        {itemCount > 0 && (
+          <div className="text-sm text-gray-500">
+            {itemCount} item{itemCount > 1 ? 's' : ''} ({totalQuantity} total)
+          </div>
+        )}
+      </div>
 
       {state.lines.length === 0 ? (
         <div className="text-center text-slate-500 space-y-4 mt-10">
@@ -50,13 +60,38 @@ export default function CartPage() {
               onRemove={() =>
                 dispatch({ type: "remove", variantId: line.variant.id })
               }
+              onChangeVariant={(newVariant) =>
+                dispatch({
+                  type: "changeVariant",
+                  oldVariantId: line.variant.id,
+                  newVariant: newVariant,
+                  product: line.product
+                })
+              }
             />
           ))}
 
           <div className="border rounded-lg p-4 mt-6 space-y-3">
-            <div className="flex justify-between">
-              <span className="font-medium">Total</span>
-              <span className="font-semibold">${total.toFixed(2)}</span>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Total Item</span>
+                <span>{itemCount} item{itemCount > 1 ? 's' : ''}</span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Total Quantity</span>
+                <span>{totalQuantity} pcs</span>
+              </div>
+              <hr className="my-2" />
+              <div className="flex justify-between">
+                <span className="font-medium">Total Harga</span>
+                <span className="font-semibold">
+                  {new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                  }).format(total)}
+                </span>
+              </div>
             </div>
             <button
               onClick={handleCheckout}

@@ -15,6 +15,7 @@ interface CartState {
 type CartAction =
   | { type: "add"; product: Product; variant: Variant; qty?: number }
   | { type: "update"; variantId: number; qty: number }
+  | { type: "changeVariant"; oldVariantId: number; newVariant: Variant; product: Product }
   | { type: "remove"; variantId: number }
   | { type: "clear" };
 
@@ -51,6 +52,17 @@ function reducer(state: CartState, action: CartAction): CartState {
         ...state,
         lines: state.lines.map(l =>
           l.variant.id === action.variantId ? { ...l, qty: Math.max(1, action.qty) } : l
+        ),
+      };
+    }
+
+    case "changeVariant": {
+      return {
+        ...state,
+        lines: state.lines.map(l =>
+          l.variant.id === action.oldVariantId
+            ? { ...l, variant: action.newVariant, product: action.product }
+            : l
         ),
       };
     }

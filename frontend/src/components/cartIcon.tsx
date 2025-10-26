@@ -8,7 +8,8 @@ import { ShoppingCartIcon } from "lucide-react";
 export default function CartIcon() {
   const { state } = useCart();
   const [pulse, setPulse] = useState(false);
-  const count = state.lines.reduce((s, l) => s + l.qty, 0);
+  const count = state.lines.length;
+  const totalQuantity = state.lines.reduce((s, l) => s + l.qty, 0);
 
   useEffect(() => {
     if (count <= 0) return;
@@ -21,7 +22,7 @@ export default function CartIcon() {
   }, [count]);
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block group">
       <motion.div
         animate={pulse ? { scale: 1.2 } : { scale: 1 }}
         transition={{ duration: 0.4 }}
@@ -36,6 +37,13 @@ export default function CartIcon() {
           )}
         </div>
       </motion.div>
+      
+      {/* Tooltip */}
+      {count > 0 && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
+          {count} item{count > 1 ? 's' : ''} ({totalQuantity} total)
+        </div>
+      )}
     </div>
   );
 }
