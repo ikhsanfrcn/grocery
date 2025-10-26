@@ -1,18 +1,16 @@
 import { Product } from "../interface/type";
 import productsData from '../../public/api/data/products.json';
 
-// Fungsi utama untuk fetch products
 export async function fetchProducts(): Promise<Product[]> {
   try {
     // Langsung pakai data statis yang di-import
     return productsData as Product[];
   } catch (error) {
     console.error('Error fetching products:', error);
-    return []; // fallback kosong
+    return [];
   }
 }
 
-// Cari product berdasarkan ID
 export async function fetchProductById(id: number): Promise<Product | null> {
   try {
     const products = await fetchProducts();
@@ -24,7 +22,6 @@ export async function fetchProductById(id: number): Promise<Product | null> {
   }
 }
 
-// Ambil semua kategori unik
 export async function getCategories(): Promise<string[]> {
   try {
     const products = await fetchProducts();
@@ -36,7 +33,6 @@ export async function getCategories(): Promise<string[]> {
   }
 }
 
-// Ambil rentang harga
 export async function getPriceRange(): Promise<{ min: number; max: number }> {
   try {
     const products = await fetchProducts();
